@@ -1,0 +1,13 @@
+services:
+  e-face:
+    build: .
+    ports:
+      - "8000:8000"
+      - "8443:443"
+    environment:
+      - EFACE_API_TOKEN=devtoken123
+      - HTTPS_ENABLED=false
+    volumes:
+      - ./backend:/app/backend
+      - ./dev-data:/data
+    restart: unless-stopped

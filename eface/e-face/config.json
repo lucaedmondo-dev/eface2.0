@@ -1,0 +1,28 @@
+{
+  "name": "e-face",
+  "version": "0.2.0",
+  "slug": "e-face",
+  "description": "Personalized user interface add-on V2",
+  "arch": ["amd64", "armv7", "arm64", "i386"],
+  "startup": "application",
+  "boot": "auto",
+  "ports": {
+    "8000/tcp": 8000,
+    "443/tcp": 8443
+  },
+  "ports_description": {
+    "8000/tcp": "HTTP dashboard",
+    "443/tcp": "HTTPS reverse proxy (requires domain)"
+  },
+  "map": ["config:rw", "data:rw"],
+  "options": {
+    "https_enabled": false,
+    "https_domain": "",
+    "https_email": ""
+  },
+  "schema": {
+    "https_enabled": "bool",
+    "https_domain": "str?",
+    "https_email": "str?"
+  }
+}

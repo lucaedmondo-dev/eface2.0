@@ -1,0 +1,125 @@
+:root{
+  --bg:#0f1221;
+  --surface:#141625;
+  --muted:#bcc5e4;
+  --text:#f5f8ff;
+  --text-strong:#ffffff;
+  --subtle:#a6aec9;
+  --primary:#6c8cff;
+  --accent:#22c1c3;
+  --radius:12px;
+  --card-padding:16px;
+  --transition-fast:120ms cubic-bezier(0.38,0.54,0.54,1);
+  --transition-base:240ms cubic-bezier(0.22,1,0.36,1);
+  --transition-slow:480ms cubic-bezier(0.19,1,0.22,1);
+  --glow-soft:rgba(108,140,255,0.25);
+  --glow-strong:rgba(34,193,195,0.35);
+}
+
+@keyframes gradient-pan{
+  0%{background-position:0% 0%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 0%;}
+}
+
+@keyframes float-in{
+  0%{opacity:0;transform:translateY(18px) scale(0.97);}
+  60%{opacity:1;transform:translateY(-2px) scale(1);}
+  100%{opacity:1;transform:translateY(0) scale(1);}
+}
+
+@keyframes overlay-rise{
+  0%{opacity:0;transform:translateY(24px) scale(0.98);}
+  100%{opacity:1;transform:translateY(0) scale(1);}
+}
+
+@keyframes pulse-glow{
+  0%{box-shadow:0 0 0 0 var(--glow-soft);}
+  60%{box-shadow:0 0 20px 8px rgba(108,140,255,0);}
+  100%{box-shadow:0 0 0 0 rgba(108,140,255,0);}
+}
+
+@keyframes shimmer{
+  0%{opacity:0.9;}
+  50%{opacity:1;}
+  100%{opacity:0.9;}
+}
+*{box-sizing:border-box}
+html,body,#app{min-height:100%;width:100%;}
+body{
+  margin:0;
+  font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background: linear-gradient(180deg,var(--bg), #0b0d14);
+  color:var(--text);
+  line-height:1.5;
+  transition:background var(--transition-slow),color var(--transition-fast);
+}
+h1,h2,h3,h4,h5,h6{
+  color:var(--text-strong);
+  font-weight:600;
+  letter-spacing:0.01em;
+  margin:0 0 0.35em;
+}
+p,li,span,label,small{
+  color:var(--text);
+}
+small,.muted{color:var(--muted);}
+strong{color:var(--text-strong);}
+.app-wrapper{width:100%; min-height:100vh; display:flex; align-items:stretch;}
+.app-shell{width:100%; min-height:100vh; margin:0; padding:clamp(18px,2vw,36px); display:flex; flex-direction:column; gap:18px; flex:1;}
+header.app-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 12px 24px rgba(5,8,22,0.5);transition:transform var(--transition-base),box-shadow var(--transition-base);animation:shimmer 6s ease-in-out infinite;}
+.logo:hover{transform:translateY(-2px) rotate(-2deg);box-shadow:0 20px 34px rgba(5,8,22,0.65);}
+.nav{display:flex;gap:8px}
+.btn{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.16);color:var(--text-strong);padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600;transition:transform var(--transition-fast),box-shadow var(--transition-base),background var(--transition-fast),border-color var(--transition-fast);}
+.btn:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(15,19,41,0.35);}
+.btn:active{transform:translateY(0) scale(0.98);}
+.btn.primary{background:linear-gradient(120deg,var(--primary),var(--accent));border:none;color:#071026;box-shadow:0 10px 18px rgba(19,34,77,0.35);}
+.btn.primary:hover{box-shadow:0 15px 28px rgba(19,34,77,0.45);}
+.card{background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(4,7,20,0.85));padding:var(--card-padding);border-radius:var(--radius);box-shadow:0 6px 18px rgba(2,6,23,0.65);color:var(--text);transition:transform var(--transition-base),box-shadow var(--transition-base),border-color var(--transition-fast);animation:float-in 520ms cubic-bezier(0.22,1,0.36,1);}
+.card:hover{transform:translateY(-4px);box-shadow:0 16px 35px rgba(4,7,20,0.65);}
+.surface-panel{max-width:1200px;margin:0 auto;width:100%;}
+.login-panel{width:min(420px,100%);margin:0 auto;display:flex;flex-direction:column;gap:12px;animation:float-in 520ms cubic-bezier(0.22,1,0.36,1);background:linear-gradient(180deg, rgba(8,11,24,0.9), rgba(2,4,12,0.95));box-shadow:0 24px 60px rgba(1,4,14,0.6);backdrop-filter:blur(12px);}
+.login-panel h2{margin-bottom:8px;}
+.login-panel form{display:flex;flex-direction:column;gap:10px;}
+.login-panel .btn{width:100%;}
+.main-area{flex:1;width:100%;display:flex;flex-direction:column;gap:20px;}
+.main-area > :first-child{width:100%;}
+.lights-grid{display:flex;gap:12px;flex-wrap:wrap}
+.light-card{width:240px;padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));}
+label,.form-label{display:block;color:var(--text-strong);font-size:13px;margin-bottom:6px;font-weight:500;}
+input[type="range"]{width:100%}
+input,textarea{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.25);color:var(--text-strong);padding:10px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.35);transition:border-color var(--transition-fast),box-shadow var(--transition-fast),transform var(--transition-fast);}
+input:focus,textarea:focus{outline:2px solid var(--primary);border-color:var(--primary);box-shadow:0 6px 16px rgba(12,18,48,0.35);transform:translateY(-1px);}
+footer{margin-top:24px;color:var(--muted);font-size:12px;text-align:center}
+
+/* Device tile visuals and room background handling */
+.device-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap:12px }
+.device-tile { border-radius:12px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:12px; box-shadow:0 6px 18px rgba(2,6,23,0.6); transition:transform var(--transition-base), box-shadow var(--transition-base), border var(--transition-fast); }
+.device-tile:hover { transform:translateY(-4px); box-shadow:0 18px 32px rgba(2,6,23,0.55); }
+.device-tile .device-icon { width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);font-size:22px }
+.device-tile .device-icon.on { box-shadow:0 0 18px 6px rgba(108,140,255,0.08); background: linear-gradient(135deg,var(--primary),var(--accent)); color:#041229 }
+.device-name{font-weight:700}
+
+/* Per-room background applied to documentElement; provide overlay for contrast */
+:root.room-bg-active { --bg-overlay: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.55)); }
+body.room-bg {
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+body.room-bg::before { content: ''; position: fixed; inset:0; pointer-events:none; background:var(--bg-overlay, rgba(0,0,0,0.45)); }
+
+.muted { color: var(--muted); font-weight:500; }
+
+/* small responsive tweaks */
+@media (max-width:900px){
+  .app-shell{padding:16px 12px 24px;}
+}
+
+@media (max-width:600px){
+  .device-grid{ grid-template-columns: repeat(2,1fr) }
+  .app-shell{padding:12px 10px 20px;}
+}

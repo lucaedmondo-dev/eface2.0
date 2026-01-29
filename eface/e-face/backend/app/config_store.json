@@ -1,0 +1,431 @@
+{
+  "site_name": "Casa Luca",
+  "advanced": {
+    "integration": {
+      "host": "http://manager.ekonex.it:42002",
+      "remote_host": "http://manager.ekonex.it:42002",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2NzkxZjNmOGYwODg0MjJkYjQwNWRmYmQ5NmViMzc1MSIsImlhdCI6MTc2MzYyNTEzOSwiZXhwIjoyMDc4OTg1MTM5fQ.JjSJLWJj13BLuFCdSRZ_-qrDVfj2r3BJbHZiHgljR18",
+      "enabled": true,
+      "extra_entities": []
+    },
+    "theme": {
+      "primary": "#0036fa",
+      "accent": "#4f4f4f",
+      "surface": "#272627",
+      "bg": "#292929",
+      "text": "#ffffff"
+    }
+  },
+  "admin": {
+    "username": "axlsound",
+    "password_hash": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"
+  },
+  "cloud": {
+    "enabled": true,
+    "mode": "jwt",
+    "issuer": "https://portal.example.com",
+    "audience": "eface-addon",
+    "algorithms": [
+      "HS256"
+    ],
+    "public_key": "supersecret-shared",
+    "login_url": "https://cloud.ekonex.it/",
+    "provider": "Portal SSO",
+    "require_local_password": true
+  },
+  "cloud_instances": [
+    {
+      "instance_id": "ha-instance-1",
+      "name": "Casa Luca",
+      "integration": {
+        "host": "http://192.168.3.25:8123",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2NzkxZjNmOGYwODg0MjJkYjQwNWRmYmQ5NmViMzc1MSIsImlhdCI6MTc2MzYyNTEzOSwiZXhwIjoyMDc4OTg1MTM5fQ.JjSJLWJj13BLuFCdSRZ_-qrDVfj2r3BJbHZiHgljR18",
+        "remote_host": "http://manager.ekonex.it:42000",
+        "path": "/api"
+      }
+    }
+  ],
+  "rooms": [
+    {
+      "id": "camera_luca",
+      "name": "Camera Luca",
+      "background": "/assets/sfondo-stanza-1-kr4J9fWV.jpg",
+      "luci": [
+        {
+          "entity_id": "light.lampadario_camera",
+          "name": "Lampadario Camera",
+          "state": "off",
+          "brightness": null,
+          "rgb_color": null,
+          "hs_color": null,
+          "color_temp": null,
+          "color_mode": null,
+          "supported_color_modes": [
+            "onoff"
+          ],
+          "device_id": "c6294dd4647c97a4c40138c23dc7058e",
+          "area_id": "camera_luca",
+          "updated_at": "2026-01-29T10:57:54.800106+00:00",
+          "labels": []
+        },
+        {
+          "entity_id": "light.applique_camera",
+          "name": "Applique Camera",
+          "state": "off",
+          "brightness": null,
+          "rgb_color": null,
+          "hs_color": null,
+          "color_temp": null,
+          "color_mode": null,
+          "supported_color_modes": [
+            "color_temp",
+            "xy"
+          ],
+          "device_id": "8e7e81e3e2144eac1c134a6f50a2685a",
+          "area_id": "camera_luca",
+          "updated_at": "2026-01-29T10:57:52.261437+00:00",
+          "labels": []
+        }
+      ],
+      "media": [],
+      "covers": [],
+      "climate": [
+        {
+          "entity_id": "climate.termostato_test_2",
+          "name": "Termostato Test _2",
+          "state": "cool",
+          "current_temperature": 14.2,
+          "target_temperature": 17.5,
+          "target_temp_high": null,
+          "target_temp_low": null,
+          "hvac_mode": "cool",
+          "hvac_modes": [
+            "off",
+            "heat",
+            "cool",
+            "heat_cool"
+          ],
+          "preset_mode": null,
+          "preset_modes": [],
+          "fan_mode": null,
+          "fan_modes": [],
+          "min_temp": 15,
+          "max_temp": 30,
+          "target_temp_step": null,
+          "supported_features": 385,
+          "device_id": null,
+          "area_id": "camera_luca",
+          "updated_at": "2026-01-29T10:25:04.638958+00:00",
+          "labels": []
+        }
+      ]
+    },
+    {
+      "id": "sala_cucina",
+      "name": "Sala/Cucina",
+      "background": "/assets/sfondo-salotto-2-BKj53cqA.jpg",
+      "luci": [
+        {
+          "entity_id": "light.applique_ingresso",
+          "name": "Applique Ingresso",
+          "state": "off",
+          "brightness": null,
+          "rgb_color": null,
+          "hs_color": null,
+          "color_temp": null,
+          "color_mode": null,
+          "supported_color_modes": [
+            "onoff"
+          ],
+          "device_id": "a8a4e8795c8abb0859de5e98e18418e8",
+          "area_id": "sala_cucina",
+          "updated_at": "2026-01-28T22:57:48.473228+00:00",
+          "labels": []
+        },
+        {
+          "entity_id": "light.strip_sopra_cucina",
+          "name": "Strip Sopra Cucina",
+          "state": "off",
+          "brightness": null,
+          "rgb_color": null,
+          "hs_color": null,
+          "color_temp": null,
+          "color_mode": null,
+          "supported_color_modes": [
+            "onoff"
+          ],
+          "device_id": "b61ac3723108f2dcbab63db1c642c002",
+          "area_id": "sala_cucina",
+          "updated_at": "2026-01-29T10:58:06.272057+00:00",
+          "labels": []
+        },
+        {
+          "entity_id": "light.lampada_3",
+          "name": "Applique Sala",
+          "state": "off",
+          "brightness": null,
+          "rgb_color": null,
+          "hs_color": null,
+          "color_temp": null,
+          "color_mode": null,
+          "supported_color_modes": [
+            "color_temp",
+            "xy"
+          ],
+          "device_id": "56c4b238c18cdeda3f76698ca80d0f19",
+          "area_id": "sala_cucina",
+          "updated_at": "2026-01-28T08:51:26.947509+00:00",
+          "labels": []
+        }
+      ],
+      "media": [],
+      "covers": [
+        {
+          "entity_id": "cover.buspro_cover_cucina_mansarda",
+          "name": "BusPro Cover Sala Mansarda",
+          "state": "closed",
+          "current_position": 0,
+          "current_tilt_position": null,
+          "device_class": null,
+          "supported_features": 15,
+          "device_id": null,
+          "area_id": "sala_cucina",
+          "updated_at": "2026-01-29T11:14:31.602001+00:00",
+          "labels": []
+        },
+        {
+          "entity_id": "cover.buspro_cover_fin_cucina_mansarda",
+          "name": "BusPro Cover Fin Cucina Mansarda",
+          "state": "closed",
+          "current_position": 0,
+          "current_tilt_position": null,
+          "device_class": null,
+          "supported_features": 15,
+          "device_id": null,
+          "area_id": "sala_cucina",
+          "updated_at": "2026-01-29T11:12:44.862478+00:00",
+          "labels": []
+        }
+      ],
+      "climate": [
+        {
+          "entity_id": "climate.termostato_sala",
+          "name": "Termostato Sala",
+          "state": "heat",
+          "current_temperature": 14.2,
+          "target_temperature": 16.0,
+          "target_temp_high": null,
+          "target_temp_low": null,
+          "hvac_mode": "heat",
+          "hvac_modes": [
+            "off",
+            "heat",
+            "cool",
+            "heat_cool"
+          ],
+          "preset_mode": null,
+          "preset_modes": [],
+          "fan_mode": null,
+          "fan_modes": [],
+          "min_temp": 5,
+          "max_temp": 40,
+          "target_temp_step": null,
+          "supported_features": 385,
+          "device_id": null,
+          "area_id": "sala_cucina",
+          "updated_at": "2026-01-29T10:20:40.143642+00:00",
+          "labels": []
+        }
+      ]
+    },
+    {
+      "id": "studio",
+      "name": "Studio",
+      "background": "/assets/sfondo-stanza-2-CDf53wet.jpeg",
+      "luci": [
+        {
+          "entity_id": "light.applique_studio",
+          "name": "Applique studio",
+          "state": "unavailable",
+          "brightness": null,
+          "rgb_color": null,
+          "hs_color": null,
+          "color_temp": null,
+          "color_mode": null,
+          "supported_color_modes": [
+            "onoff"
+          ],
+          "device_id": "f514c1441ae02cfb01dd0c3f32f68eac",
+          "area_id": "studio",
+          "updated_at": "2026-01-28T08:51:00.464514+00:00",
+          "labels": []
+        },
+        {
+          "entity_id": "light.lampadario_studio",
+          "name": "Lampadario studio",
+          "state": "unavailable",
+          "brightness": null,
+          "rgb_color": null,
+          "hs_color": null,
+          "color_temp": null,
+          "color_mode": null,
+          "supported_color_modes": [
+            "onoff"
+          ],
+          "device_id": "3c7fcfc406b9a246c0ae7f7a92235ae7",
+          "area_id": "studio",
+          "updated_at": "2026-01-28T08:51:00.465609+00:00",
+          "labels": []
+        }
+      ],
+      "media": [],
+      "covers": [],
+      "climate": []
+    },
+    {
+      "id": "balcone",
+      "name": "Balcone",
+      "background": "/assets/sfondo-natura-1-Csiz7u2R.jpg",
+      "luci": [
+        {
+          "entity_id": "light.luci_balcone",
+          "name": "Luci Balcone",
+          "state": "off",
+          "brightness": null,
+          "rgb_color": null,
+          "hs_color": null,
+          "color_temp": null,
+          "color_mode": null,
+          "supported_color_modes": [
+            "onoff"
+          ],
+          "device_id": "a166b38bac36384ec2119e519b6d6201",
+          "area_id": "balcone",
+          "updated_at": "2026-01-28T08:51:26.240233+00:00",
+          "labels": []
+        }
+      ],
+      "media": [],
+      "covers": [],
+      "climate": []
+    },
+    {
+      "id": "corridoio",
+      "name": "Corridoio",
+      "background": "/assets/pngtree-smart-home-technology-simple-and-convenient-life-image_15537327-CI-U6mPs.png",
+      "luci": [
+        {
+          "entity_id": "light.applique_corridoio",
+          "name": "Applique Corridoio",
+          "state": "off",
+          "brightness": null,
+          "rgb_color": null,
+          "hs_color": null,
+          "color_temp": null,
+          "color_mode": null,
+          "supported_color_modes": [
+            "onoff"
+          ],
+          "device_id": "44f300f34723514f877c2ccd37ef5b9c",
+          "area_id": "corridoio",
+          "updated_at": "2026-01-28T17:33:05.296098+00:00",
+          "labels": []
+        }
+      ],
+      "media": [],
+      "covers": [],
+      "climate": []
+    },
+    {
+      "id": "bagno",
+      "name": "Bagno",
+      "background": "/assets/sfondo-bagno-1-DP4z5jG9.jpeg",
+      "luci": [
+        {
+          "entity_id": "light.luce_bagno_1",
+          "name": "Luce Bagno 1",
+          "state": "off",
+          "brightness": null,
+          "rgb_color": null,
+          "hs_color": null,
+          "color_temp": null,
+          "color_mode": null,
+          "supported_color_modes": [
+            "onoff"
+          ],
+          "device_id": "4fe1d7637fa4ebd7edfa5b03f56d4878",
+          "area_id": "bagno",
+          "updated_at": "2026-01-28T22:55:47.277611+00:00",
+          "labels": []
+        },
+        {
+          "entity_id": "light.luce_bagno_2",
+          "name": "Luce Bagno 2",
+          "state": "off",
+          "brightness": null,
+          "rgb_color": null,
+          "hs_color": null,
+          "color_temp": null,
+          "color_mode": null,
+          "supported_color_modes": [
+            "onoff"
+          ],
+          "device_id": "cc47ca16074bea5857909cb1b1becb34",
+          "area_id": "bagno",
+          "updated_at": "2026-01-28T17:32:44.216949+00:00",
+          "labels": []
+        }
+      ],
+      "media": [],
+      "covers": [],
+      "climate": []
+    }
+  ],
+  "devices": [
+    {
+      "id": "light-1",
+      "type": "light",
+      "name": "Living Room Lamp",
+      "state": "off",
+      "brightness": 0,
+      "room": "living"
+    },
+    {
+      "id": "light-2",
+      "type": "light",
+      "name": "Kitchen Main",
+      "state": "on",
+      "brightness": 200,
+      "room": "kitchen"
+    }
+  ],
+  "users": [
+    {
+      "username": "user",
+      "password_hash": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+      "must_change": false,
+      "is_admin": false
+    }
+  ],
+  "synced": {
+    "tracked_entities": [
+      "climate.termostato_sala",
+      "climate.termostato_test_2",
+      "cover.buspro_cover_cucina_mansarda",
+      "cover.buspro_cover_fin_cucina_mansarda",
+      "light.applique_camera",
+      "light.applique_corridoio",
+      "light.applique_ingresso",
+      "light.applique_studio",
+      "light.lampada_3",
+      "light.lampadario_camera",
+      "light.lampadario_studio",
+      "light.luce_bagno_1",
+      "light.luce_bagno_2",
+      "light.luci_balcone",
+      "light.strip_sopra_cucina"
+    ],
+    "synced_at": "2026-01-29T11:15:17.183380",
+    "extra_entities": []
+  }
+}

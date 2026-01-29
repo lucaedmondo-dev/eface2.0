@@ -1,0 +1,13 @@
+{
+  "name": "e-face",
+  "version": "0.1.0",
+  "slug": "e-face",
+  "description": "Personalized user interface add-on (testing)",
+  "arch": ["amd64", "armv7", "arm64", "i386"],
+  "startup": "application",
+  "boot": "auto",
+  "ports": {"8000/tcp": 8000},
+  "map": ["config:rw"],
+  "options": {},
+  "schema": {}
+}
