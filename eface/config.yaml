@@ -1,6 +1,6 @@
 name: "e-face"
 description: "Personalized user interface add-on (testing)"
-version: "r0.2.0"
+version: "r0.2.1"
 slug: "eface"
 init: false
 arch:
