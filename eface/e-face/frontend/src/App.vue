@@ -24,6 +24,7 @@
           :ha-connected="haDirectConnected"
           :backend-connected="backendWsConnected"
           :weather="weatherSnapshot"
+          :meta="meta"
           @open-settings="openSettings"
           @must_change="onMustChange"
           @refresh-room="loadRoom(currentRoom)"
@@ -153,6 +154,7 @@ export default {
     const integrationError = ref(null)
     const isAdmin = ref(localStorage.getItem('eface_is_admin') === '1')
     const weatherSnapshot = ref(null)
+    const meta = ref({})
 
     function applyTheme(theme = {}) {
       if (typeof document === 'undefined') return
@@ -197,6 +199,10 @@ export default {
         const previousRoom = currentRoom.value
         rooms.value = res.data.rooms || []
         weatherSnapshot.value = res.data.weather || null
+        meta.value = {
+          weather: res.data.weather || null,
+          gates: res.data.gates || []
+        }
         securityDevices.value = res.data.security_devices || []
         rebuildEntityMetadata(rooms.value, securityDevices.value)
 
@@ -511,6 +517,15 @@ export default {
         for (const climate of (room.climate || [])) {
           if (updateDeviceState(climate)) {
             mutatedRooms = true
+          }
+        }
+      }
+      
+      // Update gates in meta
+      if (meta.value && meta.value.gates) {
+        for (const gate of meta.value.gates) {
+          if (updateDeviceState(gate)) {
+            meta.value = { ...meta.value, gates: [...meta.value.gates] }
           }
         }
       }
@@ -863,7 +878,7 @@ export default {
 
     loadBranding()
 
-    return { title, currentView, onLogged, onMustChange, openSettings, openDashboard, rooms, currentRoom, roomDevices, securityDevices, loadRoom, onRoomChange, onRoomSelected, loadRooms, view, integrationError, isAdmin, haConnectionMode, haDirectConnected, backendWsConnected, Dashboard, weatherSnapshot }
+    return { title, currentView, onLogged, onMustChange, openSettings, openDashboard, rooms, currentRoom, roomDevices, securityDevices, loadRoom, onRoomChange, onRoomSelected, loadRooms, view, integrationError, isAdmin, haConnectionMode, haDirectConnected, backendWsConnected, Dashboard, weatherSnapshot, meta }
   }
 }
 </script>

@@ -1,8 +1,8 @@
 {
   "name": "e-face",
-  "version": "0.2.0",
+  "version": "0.1.0",
   "slug": "e-face",
-  "description": "Personalized user interface add-on V2",
+  "description": "Personalized user interface add-on (testing)",
   "arch": ["amd64", "armv7", "arm64", "i386"],
   "startup": "application",
   "boot": "auto",

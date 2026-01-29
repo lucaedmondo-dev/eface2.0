@@ -50,6 +50,9 @@
         <button class="ghost-btn icon-only" type="button" @click="openCoversModal" aria-label="Tapparelle">
           <span class="icon" aria-hidden="true" v-html="iconMarkup('blinds')"></span>
         </button>
+        <button class="ghost-btn icon-only" type="button" @click="openGatesModal" aria-label="Cancelli">
+          <span class="icon" aria-hidden="true" v-html="iconMarkup('gate')"></span>
+        </button>
         <button class="ghost-btn icon-only" type="button" @click="openDoorbellPicker" aria-label="Apri campanello">
           <span class="icon" aria-hidden="true" v-html="iconMarkup('doorbell')"></span>
         </button>
@@ -108,37 +111,47 @@
 
         <!-- Vista Overview della stanza -->
         <template v-if="activeCategory === 'overview'">
-          <section v-if="currentRoomObject" class="rooms-grid">
+          <section v-if="structuredRooms.length" class="rooms-grid">
             <article
+              v-for="room in visibleRooms"
+              :key="room.id"
               class="room-card card"
-              :class="{ focused: true, 'has-bg': !!currentRoomObject.background }"
-              :style="roomBackgroundStyle(currentRoomObject)"
+              :class="{ focused: room.id === currentRoomId, 'has-bg': !!room.background }"
+              :style="roomBackgroundStyle(room)"
             >
               <header class="room-head">
                 <div class="room-title-group">
-                  <h3>{{ currentRoomObject.name }}</h3>
-                  <div v-if="currentRoomObject.temperatures && currentRoomObject.temperatures.length > 0" class="room-temp-banner">
+                  <h3>{{ room.name }}</h3>
+                  <div v-if="room.temperatures && room.temperatures.length > 0" class="room-temp-banner">
                     <span class="temp-icon" v-html="iconMarkup('thermo')"></span>
                     <div class="temp-values">
                       <span 
-                        v-for="(sensor, index) in currentRoomObject.temperatures" 
+                        v-for="(sensor, index) in room.temperatures" 
                         :key="sensor.id"
                         class="temp-reading"
                       >
-                        {{ sensor.value !== null ? sensor.value : '--' }}{{ sensor.unit || '°C' }}<span v-if="index < currentRoomObject.temperatures.length - 1" class="temp-separator"> • </span>
+                        {{ sensor.value !== null ? sensor.value : '--' }}{{ sensor.unit || '°C' }}<span v-if="index < room.temperatures.length - 1" class="temp-separator"> • </span>
                       </span>
                     </div>
                   </div>
                 </div>
                 <div class="room-actions">
                   <div class="primary-actions">
-                    <button class="pill" type="button" :class="{ on: hasRoomLightsOn(currentRoomObject) }" @click="toggleRoom(currentRoomObject)">
-                      {{ hasRoomLightsOn(currentRoomObject) ? 'Spegni tutto' : 'Accendi tutto' }}
+                    <button class="pill" type="button" :class="{ on: hasRoomLightsOn(room) }" @click="toggleRoom(room)">
+                      {{ hasRoomLightsOn(room) ? 'Spegni tutto' : 'Accendi tutto' }}
+                    </button>
+                    <button
+                      class="pill ghost"
+                      v-if="room.id !== currentRoomId"
+                      type="button"
+                      @click="focusRoom(room.id)"
+                    >
+                      Apri stanza
                     </button>
                   </div>
-                  <div class="scene-actions" v-if="currentRoomObject.scenes && currentRoomObject.scenes.length">
+                  <div class="scene-actions" v-if="room.scenes && room.scenes.length">
                     <button
-                      v-for="scene in currentRoomObject.scenes"
+                      v-for="scene in room.scenes"
                       :key="scene.id"
                       class="pill scene"
                       type="button"
@@ -153,16 +166,16 @@
 
               <div class="lights-grid">
                 <article
-                  v-for="device in currentRoomDevices"
+                  v-for="device in room.devices"
                   :key="device.id"
                   class="light-card"
                   :class="{ active: isOn(device) }"
                   :style="lightCardStyle(device)"
                   role="button"
                   tabindex="0"
-                  @click="tryOpenDevicePanel(device, currentRoomObject)"
-                  @keydown.enter.prevent="tryOpenDevicePanel(device, currentRoomObject)"
-                  @keydown.space.prevent="tryOpenDevicePanel(device, currentRoomObject)"
+                  @click="tryOpenDevicePanel(device, room)"
+                  @keydown.enter.prevent="tryOpenDevicePanel(device, room)"
+                  @keydown.space.prevent="tryOpenDevicePanel(device, room)"
                 >
                   <div class="light-head">
                     <div class="device-chip">
@@ -192,11 +205,11 @@
               </div>
 
               <!-- Tapparelle -->
-              <div v-if="currentRoomObject.covers && currentRoomObject.covers.length > 0" class="covers-section">
+              <div v-if="room.covers && room.covers.length > 0" class="covers-section">
                 <h4 class="section-title">Tapparelle</h4>
                 <div class="covers-grid">
                   <article
-                    v-for="cover in currentRoomObject.covers"
+                    v-for="cover in room.covers"
                     :key="cover.id"
                     class="cover-overview-card"
                     :class="{ open: isCoverOpen(cover) }"
@@ -244,11 +257,11 @@
               </div>
 
               <!-- Clima -->
-              <div v-if="currentRoomObject.climate && currentRoomObject.climate.length > 0" class="climate-section">
+              <div v-if="room.climate && room.climate.length > 0" class="climate-section">
                 <h4 class="section-title">Clima</h4>
                 <div class="climate-grid">
                   <article
-                    v-for="climate in currentRoomObject.climate"
+                    v-for="climate in room.climate"
                     :key="climate.id"
                     class="climate-overview-card"
                     :class="{
@@ -308,29 +321,6 @@
 
                     <div v-else class="climate-off-sm">
                       <span class="off-temp-sm">{{ climate.temperature || climate.target_temperature || '--' }}°C</span>
-                    </div>
-                  </article>
-                </div>
-              </div>
-
-              <!-- Sensori Temperature Stanza -->
-              <div v-if="currentRoomObject.temperatures && currentRoomObject.temperatures.length > 0" class="temperatures-section">
-                <h4 class="section-title">Temperature Ambiente</h4>
-                <div class="temperatures-grid">
-                  <article
-                    v-for="sensor in currentRoomObject.temperatures"
-                    :key="sensor.id"
-                    class="temp-sensor-card"
-                  >
-                    <div class="temp-sensor-icon">
-                      <span v-html="iconMarkup('thermo')"></span>
-                    </div>
-                    <div class="temp-sensor-info">
-                      <p class="temp-sensor-name">{{ sensor.name }}</p>
-                      <div class="temp-sensor-value">
-                        <span class="temp-big">{{ sensor.value !== null ? sensor.value : '--' }}</span>
-                        <span class="temp-unit">{{ sensor.unit || '°C' }}</span>
-                      </div>
                     </div>
                   </article>
                 </div>
@@ -1023,32 +1013,6 @@
                   </article>
                 </div>
               </div>
-
-              <!-- Sensori Temperature Stanza -->
-              <div v-if="room.temperatures && room.temperatures.length > 0" class="comfort-section">
-                <h4 class="comfort-section-title">
-                  <span class="icon" aria-hidden="true" v-html="iconMarkup('thermo')"></span>
-                  Temperature Ambiente
-                </h4>
-                <div class="temperatures-grid">
-                  <article
-                    v-for="sensor in room.temperatures"
-                    :key="sensor.id"
-                    class="temp-sensor-card"
-                  >
-                    <div class="temp-sensor-icon">
-                      <span v-html="iconMarkup('thermo')"></span>
-                    </div>
-                    <div class="temp-sensor-info">
-                      <p class="temp-sensor-name">{{ sensor.name }}</p>
-                      <div class="temp-sensor-value">
-                        <span class="temp-big">{{ sensor.value !== null ? sensor.value : '--' }}</span>
-                        <span class="temp-unit">{{ sensor.unit || '°C' }}</span>
-                      </div>
-                    </div>
-                  </article>
-                </div>
-              </div>
             </article>
           </section>
           <div v-else class="empty-state card">
@@ -1259,6 +1223,48 @@
           <p v-else class="muted">
             {{ showAllCoversInModal ? 'Nessuna tapparella disponibile.' : 'Nessuna tapparella risulta aperta.' }}
           </p>
+        </div>
+      </div>
+    </transition>
+
+    <!-- Gates Modal -->
+    <transition name="fade">
+      <div v-if="gatesModalOpen" class="lights-overlay" role="dialog" aria-modal="true">
+        <div class="lights-panel card" @click.stop>
+          <header class="panel-head">
+            <div>
+              <p class="eyebrow">Controllo</p>
+              <h3>Cancelli e Portoni</h3>
+              <small class="muted tiny" v-if="gatesList.length">{{ gatesList.length }} {{ gatesList.length === 1 ? 'cancello' : 'cancelli' }}</small>
+            </div>
+            <button class="ghost-btn icon-only" type="button" @click="closeGatesModal" aria-label="Chiudi">
+              <span class="icon" aria-hidden="true" v-html="iconMarkup('close')"></span>
+            </button>
+          </header>
+          <div v-if="gatesList.length" class="active-lights-list">
+            <article
+              v-for="gate in gatesList"
+              :key="gate.id"
+              class="active-light-card"
+              @click="activateGate(gate)"
+              style="cursor: pointer;"
+            >
+              <div class="active-light-head">
+                <div class="active-light-info">
+                  <h5 class="active-light-name">{{ gate.name }}</h5>
+                  <p v-if="gate.state && gate.state !== 'unknown'" class="muted tiny">{{ gate.state }}</p>
+                </div>
+                <button
+                  class="pill primary"
+                  type="button"
+                  @click.stop="activateGate(gate)"
+                >
+                  Apri
+                </button>
+              </div>
+            </article>
+          </div>
+          <p v-else class="muted">Nessun cancello disponibile.</p>
         </div>
       </div>
     </transition>
@@ -1829,7 +1835,8 @@ const ICONS = {
   grid: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>',
   rows: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>',
   arrowLeft: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/><path d="M5 12h14"/></svg>',
-  arrowRight: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"/><path d="M19 12H5"/></svg>'
+  arrowRight: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"/><path d="M19 12H5"/></svg>',
+  gate: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="14" rx="1"/><path d="M12 6V20"/><path d="M8 6v14"/><path d="M16 6v14"/><circle cx="15" cy="13" r="1" fill="currentColor"/></svg>'
 }
 
 const defaultSnapshotState = () => ({
@@ -1939,6 +1946,10 @@ export default {
     weather: {
       type: Object,
       default: null
+    },
+    meta: {
+      type: Object,
+      default: () => ({})
     }
   },
   emits: ['open-settings', 'refresh-room', 'room-selected'],
@@ -1960,6 +1971,7 @@ export default {
       showAllLightsInModal: false,
       coversModalOpen: false,
       showAllCoversInModal: false,
+      gatesModalOpen: false,
       haWeather: null,
       weatherDetailsOpen: false,
       sceneTriggering: null,
@@ -2492,6 +2504,18 @@ export default {
         }
       }
       return this.showAllCoversInModal ? list : list.filter(entry => entry.isOpen)
+    },
+    gatesList() {
+      if (!this.meta || !this.meta.gates) return []
+      return this.meta.gates.map(gate => ({
+        id: gate.id,
+        entity_id: gate.entity_id,
+        name: gate.name || gate.entity_id,
+        state: gate.state,
+        domain: gate.domain,
+        icon: gate.icon,
+        device_class: gate.device_class
+      }))
     },
     canTurnOffVisibleLights() {
       return this.modalLightDevices.some((entry) => entry.isOn)
@@ -5640,6 +5664,58 @@ export default {
     },
     closeCoversModal() {
       this.coversModalOpen = false
+    },
+    openGatesModal() {
+      this.gatesModalOpen = true
+    },
+    closeGatesModal() {
+      this.gatesModalOpen = false
+    },
+    async activateGate(gate) {
+      try {
+        let service = ''
+        switch (gate.domain) {
+          case 'cover':
+            // Toggle cover: se chiuso apre, se aperto chiude
+            if (gate.state === 'closed' || gate.state === 'closing') {
+              service = 'open_cover'
+            } else if (gate.state === 'open' || gate.state === 'opening') {
+              service = 'close_cover'
+            } else {
+              service = 'toggle'
+            }
+            break
+          case 'switch':
+          case 'light':
+            service = 'turn_on'
+            break
+          case 'button':
+            service = 'press'
+            break
+          case 'scene':
+            service = 'turn_on'
+            break
+          default:
+            service = 'turn_on'
+        }
+        console.log(`Activating gate ${gate.entity_id} (domain: ${gate.domain}, state: ${gate.state}, service: ${service})`)
+        
+        const integration = await axios.get('/api/integration/ws-info')
+        const haUrl = integration.data?.host || 'http://homeassistant.local:8123'
+        const haToken = integration.data?.token || ''
+        
+        await axios.post(`${haUrl}/api/services/${gate.domain}/${service}`, {
+          entity_id: gate.entity_id
+        }, {
+          headers: { Authorization: `Bearer ${haToken}` }
+        })
+        // Refresh state after 1 second
+        setTimeout(() => {
+          this.$emit('refresh-room')
+        }, 1000)
+      } catch (err) {
+        console.error('Errore attivazione gate:', err)
+      }
     },
     async openAllCovers() {
       const targets = this.modalCoverDevices

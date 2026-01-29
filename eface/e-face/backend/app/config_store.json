@@ -65,7 +65,7 @@
           ],
           "device_id": "c6294dd4647c97a4c40138c23dc7058e",
           "area_id": "camera_luca",
-          "updated_at": "2026-01-29T10:57:54.800106+00:00",
+          "updated_at": "2026-01-29T14:43:15.923117+00:00",
           "labels": []
         },
         {
@@ -83,7 +83,7 @@
           ],
           "device_id": "8e7e81e3e2144eac1c134a6f50a2685a",
           "area_id": "camera_luca",
-          "updated_at": "2026-01-29T10:57:52.261437+00:00",
+          "updated_at": "2026-01-29T16:47:18.233870+00:00",
           "labels": []
         }
       ],
@@ -93,12 +93,12 @@
         {
           "entity_id": "climate.termostato_test_2",
           "name": "Termostato Test _2",
-          "state": "cool",
-          "current_temperature": 14.2,
-          "target_temperature": 17.5,
+          "state": "heat",
+          "current_temperature": 14.1,
+          "target_temperature": 20.5,
           "target_temp_high": null,
           "target_temp_low": null,
-          "hvac_mode": "cool",
+          "hvac_mode": "heat",
           "hvac_modes": [
             "off",
             "heat",
@@ -115,7 +115,7 @@
           "supported_features": 385,
           "device_id": null,
           "area_id": "camera_luca",
-          "updated_at": "2026-01-29T10:25:04.638958+00:00",
+          "updated_at": "2026-01-29T14:08:19.054815+00:00",
           "labels": []
         }
       ]
@@ -139,7 +139,7 @@
           ],
           "device_id": "a8a4e8795c8abb0859de5e98e18418e8",
           "area_id": "sala_cucina",
-          "updated_at": "2026-01-28T22:57:48.473228+00:00",
+          "updated_at": "2026-01-29T14:43:22.709235+00:00",
           "labels": []
         },
         {
@@ -156,7 +156,7 @@
           ],
           "device_id": "b61ac3723108f2dcbab63db1c642c002",
           "area_id": "sala_cucina",
-          "updated_at": "2026-01-29T10:58:06.272057+00:00",
+          "updated_at": "2026-01-29T14:43:23.679282+00:00",
           "labels": []
         },
         {
@@ -174,7 +174,7 @@
           ],
           "device_id": "56c4b238c18cdeda3f76698ca80d0f19",
           "area_id": "sala_cucina",
-          "updated_at": "2026-01-28T08:51:26.947509+00:00",
+          "updated_at": "2026-01-29T14:06:22.003785+00:00",
           "labels": []
         }
       ],
@@ -190,7 +190,7 @@
           "supported_features": 15,
           "device_id": null,
           "area_id": "sala_cucina",
-          "updated_at": "2026-01-29T11:14:31.602001+00:00",
+          "updated_at": "2026-01-29T16:35:32.580832+00:00",
           "labels": []
         },
         {
@@ -203,8 +203,11 @@
           "supported_features": 15,
           "device_id": null,
           "area_id": "sala_cucina",
-          "updated_at": "2026-01-29T11:12:44.862478+00:00",
-          "labels": []
+          "updated_at": "2026-01-29T16:36:21.701753+00:00",
+          "labels": [
+            "gate_2",
+            "gate-2"
+          ]
         }
       ],
       "climate": [
@@ -212,8 +215,8 @@
           "entity_id": "climate.termostato_sala",
           "name": "Termostato Sala",
           "state": "heat",
-          "current_temperature": 14.2,
-          "target_temperature": 16.0,
+          "current_temperature": 14.1,
+          "target_temperature": 22.5,
           "target_temp_high": null,
           "target_temp_low": null,
           "hvac_mode": "heat",
@@ -233,7 +236,7 @@
           "supported_features": 385,
           "device_id": null,
           "area_id": "sala_cucina",
-          "updated_at": "2026-01-29T10:20:40.143642+00:00",
+          "updated_at": "2026-01-29T14:52:25.422939+00:00",
           "labels": []
         }
       ]
@@ -301,7 +304,7 @@
           ],
           "device_id": "a166b38bac36384ec2119e519b6d6201",
           "area_id": "balcone",
-          "updated_at": "2026-01-28T08:51:26.240233+00:00",
+          "updated_at": "2026-01-29T14:07:06.736681+00:00",
           "labels": []
         }
       ],
@@ -328,7 +331,7 @@
           ],
           "device_id": "44f300f34723514f877c2ccd37ef5b9c",
           "area_id": "corridoio",
-          "updated_at": "2026-01-28T17:33:05.296098+00:00",
+          "updated_at": "2026-01-29T11:25:43.497291+00:00",
           "labels": []
         }
       ],
@@ -355,7 +358,7 @@
           ],
           "device_id": "4fe1d7637fa4ebd7edfa5b03f56d4878",
           "area_id": "bagno",
-          "updated_at": "2026-01-28T22:55:47.277611+00:00",
+          "updated_at": "2026-01-29T11:25:43.517879+00:00",
           "labels": []
         },
         {
@@ -372,7 +375,7 @@
           ],
           "device_id": "cc47ca16074bea5857909cb1b1becb34",
           "area_id": "bagno",
-          "updated_at": "2026-01-28T17:32:44.216949+00:00",
+          "updated_at": "2026-01-29T11:25:43.537205+00:00",
           "labels": []
         }
       ],
@@ -425,7 +428,7 @@
       "light.luci_balcone",
       "light.strip_sopra_cucina"
     ],
-    "synced_at": "2026-01-29T11:15:17.183380",
+    "synced_at": "2026-01-29T16:53:43.485098",
     "extra_entities": []
   }
 }

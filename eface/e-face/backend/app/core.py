@@ -808,7 +808,7 @@ def _collect_cover_entities(state_map: dict, entity_registry: dict, device_map: 
         cover_data = {
             'id': entity_id,
             'entity_id': entity_id,
-            'name': attrs.get('friendly_name') or registry_entry.get('original_name') or entity_id,
+            'name': registry_entry.get('original_name') or attrs.get('friendly_name') or entity_id,
             'state': state.get('state'),
             'current_position': attrs.get('current_position'),
             'current_tilt_position': attrs.get('current_tilt_position'),
@@ -870,7 +870,7 @@ def _collect_climate_entities(state_map: dict, entity_registry: dict, device_map
         climate_data = {
             'id': entity_id,
             'entity_id': entity_id,
-            'name': attrs.get('friendly_name') or registry_entry.get('original_name') or entity_id,
+            'name': registry_entry.get('original_name') or attrs.get('friendly_name') or entity_id,
             'state': state.get('state'),
             'current_temperature': attrs.get('current_temperature'),
             'target_temperature': attrs.get('temperature'),
@@ -958,7 +958,7 @@ def _collect_room_temperature_sensors(state_map: dict, entity_registry: dict, de
         sensor_data = {
             'id': entity_id,
             'entity_id': entity_id,
-            'name': attrs.get('friendly_name') or registry_entry.get('original_name') or entity_id,
+            'name': registry_entry.get('original_name') or attrs.get('friendly_name') or entity_id,
             'state': state_val,
             'value': temp_value,
             'unit': unit,
@@ -971,6 +971,53 @@ def _collect_room_temperature_sensors(state_map: dict, entity_registry: dict, de
     
     print(f"DEBUG RoomTemp: Total collected: {dict((k, len(v)) for k, v in temp_sensors_by_room.items())}")
     return dict(temp_sensors_by_room)
+
+def _collect_gate_entities(state_map: dict, entity_registry: dict, device_map: dict) -> list:
+    """Collect gate/door entities with 'gate' tag (global, not per room)."""
+    gates = []
+    if not isinstance(state_map, dict):
+        return []
+    
+    for entity_id, state in state_map.items():
+        if not isinstance(entity_id, str):
+            continue
+        
+        attrs = (state or {}).get('attributes') or {}
+        registry_entry = entity_registry.get(entity_id) or {}
+        
+        # Collect labels from all sources (like cameras do)
+        labels = _collect_labels(
+            attrs.get('labels'),
+            attrs.get('tags'),
+            attrs.get('label'),
+            registry_entry.get('labels'),
+            attrs.get('eface_tags'),
+            attrs.get('custom_tags')
+        )
+        
+        # Check if has any tag starting with "gate"
+        has_gate_tag = any(label.startswith('gate') for label in labels)
+        if not has_gate_tag:
+            continue
+        
+        # Skip hidden entities
+        if _should_hide_entity(attrs, registry_entry, labels):
+            continue
+        
+        gate_data = {
+            'id': entity_id,
+            'entity_id': entity_id,
+            'name': registry_entry.get('original_name') or attrs.get('friendly_name') or entity_id,
+            'state': state.get('state'),
+            'domain': entity_id.split('.')[0] if '.' in entity_id else 'unknown',
+            'labels': labels,
+            'icon': attrs.get('icon'),
+            'device_class': attrs.get('device_class')
+        }
+        
+        gates.append(gate_data)
+    
+    return gates
 
 def fetch_ha_rooms(integration: dict, include_meta: bool = False):
     if not isinstance(integration, dict):
@@ -1071,6 +1118,9 @@ def fetch_ha_rooms(integration: dict, include_meta: bool = False):
     covers_by_room = _collect_cover_entities(state_map, entity_registry, device_map)
     climate_by_room = _collect_climate_entities(state_map, entity_registry, device_map)
     room_temp_sensors = _collect_room_temperature_sensors(state_map, entity_registry, device_map)
+    
+    # Collect global gate entities
+    gate_entities = _collect_gate_entities(state_map, entity_registry, device_map)
 
     # if no synced template is available yet, fall back to legacy discovery logic
     if not tracked_entities or not _has_valid_room_templates(room_templates):
@@ -1152,7 +1202,9 @@ def fetch_ha_rooms(integration: dict, include_meta: bool = False):
     rooms = _attach_cameras_to_rooms(rooms, camera_entries)
 
     if include_meta:
-        return rooms, ({'weather': weather_snapshot} if weather_snapshot else {})
+        meta = {'weather': weather_snapshot} if weather_snapshot else {}
+        meta['gates'] = gate_entities
+        return rooms, meta
 
     return rooms
 
